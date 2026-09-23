@@ -29,9 +29,13 @@
   .marca-top{display:flex;align-items:center;gap:14px;min-width:0}
   .marca-top img{width:72px;height:72px;border-radius:50%;flex-shrink:0}
   .marca-top .logo{font-size:26px;letter-spacing:5px;color:var(--tinta);white-space:nowrap}
-  .btn{display:inline-block;padding:16px 32px;font-size:13px;letter-spacing:2px;text-transform:uppercase;border:1px solid var(--tinta);cursor:pointer;background:none;font-family:inherit;color:var(--tinta)}
+  .btn{position:relative;overflow:hidden;z-index:0;display:inline-block;padding:16px 32px;font-size:13px;letter-spacing:2px;text-transform:uppercase;border:1px solid var(--tinta);cursor:pointer;background:none;font-family:inherit;color:var(--tinta);transition:color .35s,border-color .35s}
+  .btn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--tinta);transform:scaleX(0);transform-origin:right;transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+  .btn:hover::before,.btn:focus-visible::before{transform:scaleX(1);transform-origin:left}
+  .btn:hover,.btn:focus-visible{color:var(--fondo)}
   .btn.lleno{background:var(--tinta);color:var(--fondo)}
-  .btn:hover{opacity:.85}
+  .btn.lleno::before{background:var(--acento)}
+  .btn.lleno:hover,.btn.lleno:focus-visible{color:#fff;border-color:var(--acento)}
 
   .hero{display:grid;grid-template-columns:1fr 1fr;min-height:560px}
   .hero-texto{padding:64px 48px 64px max(24px,calc((100vw - 1280px)/2 + 24px));display:flex;flex-direction:column;justify-content:center;gap:24px}
@@ -48,23 +52,65 @@
   .titulo h2{margin:0;font-size:clamp(34px,4vw,52px)}
 
   .filtros{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:48px}
-  .filtros button{font-family:inherit;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:12px 20px;border:1px solid var(--linea);background:none;color:var(--texto);cursor:pointer;min-height:44px}
-  .filtros button.activo{border-color:var(--tinta);color:var(--tinta);background:#fff}
+  .filtros button{font-family:inherit;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:12px 20px;border:1px solid var(--linea);background:none;color:var(--texto);cursor:pointer;min-height:44px;border-radius:999px;transition:background-color .3s,color .3s,border-color .3s,transform .2s}
+  .filtros button:hover{border-color:var(--acento);color:var(--tinta)}
+  .filtros button:active{transform:scale(.96)}
+  .filtros button.activo{border-color:var(--tinta);color:var(--fondo);background:var(--tinta)}
 
   .grilla{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:28px;row-gap:56px}
   .card{display:flex;flex-direction:column;gap:14px}
-  .card .img{aspect-ratio:4/5;background:var(--foto) center/cover no-repeat;position:relative;display:flex;align-items:center;justify-content:center;color:var(--suave);font-size:11px;letter-spacing:2px;text-transform:uppercase}
-  .card .tag{position:absolute;top:14px;left:14px;background:var(--fondo);padding:5px 11px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--tinta)}
+  .card .img{aspect-ratio:4/5;background:var(--foto);position:relative;overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--suave);font-size:11px;letter-spacing:2px;text-transform:uppercase}
+  .card .img .foto{position:absolute;inset:0;background:center/cover no-repeat;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+  .card .img::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(61,10,54,.35),transparent 55%);opacity:0;transition:opacity .4s;pointer-events:none}
+  .card:hover .img .foto{transform:scale(1.07)}
+  .card:hover .img::after{opacity:1}
+  .card .vista{position:absolute;left:14px;right:14px;bottom:14px;z-index:2;padding:12px;border:0;background:rgba(246,239,226,.95);font-family:inherit;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--tinta);cursor:pointer;transform:translateY(calc(100% + 24px));transition:transform .45s cubic-bezier(.2,.7,.2,1),background-color .3s,color .3s}
+  .card:hover .vista,.card .vista:focus-visible{transform:none}
+  .card .vista:hover{background:var(--tinta);color:var(--fondo)}
+  @media (hover:none){ .card .vista{transform:none;left:auto;right:10px;bottom:10px;padding:8px 10px;font-size:10px;letter-spacing:1px} }
+  .card .tag{position:absolute;top:14px;left:14px;z-index:2;background:var(--fondo);padding:5px 11px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--tinta)}
   .card .cat{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--suave)}
   .card .nombre{font-size:25px;line-height:1.15}
   .card .desc{font-size:14px;color:var(--texto);font-weight:300}
   .card .pie{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--linea);padding-top:12px}
   .card .precio{font-size:18px;font-weight:500}
-  .card .quiero{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;border:0;border-bottom:1px solid var(--acento);padding:12px 0 4px;background:none;font-family:inherit;color:var(--tinta);cursor:pointer}
+  .card .quiero{position:relative;overflow:hidden;z-index:0;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;border:1px solid var(--tinta);padding:10px 16px;background:none;font-family:inherit;color:var(--tinta);cursor:pointer;transition:color .3s,border-color .3s,transform .15s}
+  .card .quiero::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--tinta);transform:scaleY(0);transform-origin:bottom;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+  .card .quiero:hover{color:var(--fondo)}
+  .card .quiero:hover::before{transform:scaleY(1)}
+  .card .quiero:active{transform:scale(.95)}
+  .card .quiero.ok{color:#fff;border-color:var(--acento)}
+  .card .quiero.ok::before{background:var(--acento);transform:scaleY(1)}
+
+  /* ====== VISTA RÁPIDA ====== */
+  .modal{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(30,10,28,.55);opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+  .modal.abierto{opacity:1;visibility:visible}
+  .modal-caja{position:relative;background:var(--fondo);width:min(920px,100%);max-height:calc(100vh - 48px);overflow:auto;display:grid;grid-template-columns:1fr 1fr;transform:translateY(24px) scale(.98);transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+  .modal.abierto .modal-caja{transform:none}
+  .m-foto{background:var(--foto) center/cover no-repeat;min-height:440px;display:flex;align-items:center;justify-content:center;color:var(--suave);font-size:11px;letter-spacing:2px}
+  .m-info{padding:52px 40px 40px;display:flex;flex-direction:column;gap:14px}
+  .m-info .cat{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--acento-texto)}
+  .m-info h3{margin:0;font-size:40px;line-height:1.1}
+  .m-precio{font-size:22px;font-weight:500}
+  .m-info p{margin:0;font-size:16px;line-height:1.7;font-weight:300;color:var(--texto)}
+  .m-acciones{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}
+  .m-acciones .cant button{height:100%;min-height:48px}
+  .m-acciones .btn{flex:1;text-align:center;min-width:180px}
+  .m-wa{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--suave);text-decoration:underline;text-underline-offset:4px;align-self:flex-start;padding:8px 0}
+  .m-wa:hover{color:var(--acento-texto)}
+  .m-cerrar{position:absolute;top:10px;right:10px;z-index:2;background:rgba(246,239,226,.92);border-radius:50%}
+
+  /* ====== AVISO "AGREGADO" ====== */
+  .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:70;transform:translate(-50%,160%);display:flex;align-items:center;gap:16px;max-width:calc(100% - 32px);padding:10px 10px 10px 20px;background:var(--tinta);color:var(--claro);font-size:14px;box-shadow:0 18px 40px -18px rgba(61,10,54,.6);transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+  .toast.ver{transform:translate(-50%,0)}
+  .toast button{flex-shrink:0;border:0;background:var(--acento);color:#fff;padding:9px 14px;font-family:inherit;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer}
 
   /* ====== CARRITO ====== */
   .top-acciones{display:flex;align-items:center;gap:10px}
   .carro-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 18px;border:1px solid var(--tinta);background:none;cursor:pointer;font-family:inherit;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--tinta)}
+  .carro-btn{transition:background-color .3s,color .3s}
+  .carro-btn:hover{background:var(--tinta);color:var(--fondo)}
+  .carro-btn:hover .contador{background:var(--acento);color:#fff}
   .carro-btn svg{width:18px;height:18px}
   .contador{background:var(--tinta);color:var(--fondo);border-radius:999px;min-width:22px;height:22px;padding:0 6px;font-size:12px;letter-spacing:0;display:inline-flex;align-items:center;justify-content:center}
   .contador.salta{animation:salta .35s}
@@ -145,6 +191,7 @@
     .trazo path{stroke-dashoffset:0;transition:none}
     .punto.activo .icono path{animation:none}
     mark.resalta{background-size:100% 100%;transition:none}
+    .card .img .foto,.modal-caja,.toast{transition:none}
   }
   .lema{margin-top:88px;text-align:center}
   .lema blockquote{margin:0 auto;max-width:860px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(30px,4vw,50px);line-height:1.2;color:var(--tinta)}
@@ -188,7 +235,11 @@
     .grilla{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:14px;row-gap:36px}
     .card .nombre{font-size:20px} .card .desc{display:none}
     .card .pie{flex-direction:column;align-items:stretch;gap:10px}
-    .card .quiero{text-align:center;border:1px solid var(--tinta);padding:12px 0;font-size:11px}
+    .card .quiero{text-align:center;padding:12px 0;font-size:11px}
+    .modal{padding:0;align-items:flex-end}
+    .modal-caja{grid-template-columns:1fr;max-height:92vh}
+    .m-foto{min-height:0;aspect-ratio:1}
+    .m-info{padding:24px 20px 32px} .m-info h3{font-size:30px}
     .pasos,.cols{grid-template-columns:1fr;gap:36px}
     .intro-top{grid-template-columns:1fr;gap:24px}
     .intro-texto p,.diferencia .lead{font-size:16px}
@@ -254,6 +305,26 @@ const CONFIG = {
     <button class="quitar" id="vaciar" style="align-self:center">Vaciar carrito</button>
   </div>
 </aside>
+
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-caja" role="dialog" aria-modal="true" aria-labelledby="mNombre">
+    <button class="cerrar m-cerrar" id="mCerrar" aria-label="Cerrar">×</button>
+    <div class="m-foto" id="mFoto"></div>
+    <div class="m-info">
+      <div class="cat" id="mCat"></div>
+      <h3 class="serif" id="mNombre"></h3>
+      <div class="m-precio" id="mPrecio"></div>
+      <p id="mDesc"></p>
+      <div class="m-acciones">
+        <div class="cant"><button id="mMenos" aria-label="Quitar uno">−</button><span id="mCant">1</span><button id="mMas" aria-label="Agregar uno">+</button></div>
+        <button class="btn lleno" id="mAgregar">Agregar al carrito</button>
+      </div>
+      <a class="m-wa" id="mWa" target="_blank" rel="noopener">Preguntar por WhatsApp</a>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toastTxt"></span><button id="toastVer">Ver carrito</button></div>
 
 <section class="hero">
   <div class="hero-texto">
@@ -420,11 +491,17 @@ const LOGOS = {
 
   function pintar(cat){
     grilla.innerHTML = "";
-    PRODUCTOS.filter(p => cat === "Todo" || p.categoria === cat).forEach(p => {
-      const c = document.createElement("div"); c.className = "card";
+    PRODUCTOS.filter(p => cat === "Todo" || p.categoria === cat).forEach((p, n) => {
+      const c = document.createElement("div"); c.className = "card aparece";
+      c.style.setProperty("--d", (n % 4) * 0.08 + "s");
       const img = document.createElement("div"); img.className = "img";
-      if (p.foto) img.style.backgroundImage = "url('" + foto(p.foto) + "')"; else img.textContent = "[Foto]";
+      if (p.foto){ const f = document.createElement("div"); f.className = "foto"; f.style.backgroundImage = "url('" + foto(p.foto) + "')"; img.appendChild(f); }
+      else img.textContent = "[Foto]";
       if (p.etiqueta){ const t = document.createElement("span"); t.className = "tag"; t.textContent = p.etiqueta; img.appendChild(t); }
+      const v = document.createElement("button"); v.className = "vista"; v.type = "button"; v.textContent = "Vista rápida";
+      v.onclick = (e) => { e.stopPropagation(); abrirModal(p); };
+      img.appendChild(v);
+      img.onclick = () => abrirModal(p);
       c.appendChild(img);
       const info = document.createElement("div");
       info.innerHTML = '<div class="cat"></div><div class="nombre serif"></div><div class="desc"></div>';
@@ -433,15 +510,17 @@ const LOGOS = {
       info.querySelector(".desc").textContent = p.descripcion || "";
       c.appendChild(info);
       const pie = document.createElement("div"); pie.className = "pie";
-      const pr = document.createElement("div"); pr.className = "precio"; pr.textContent = p.precio;
+      const pr = document.createElement("div"); pr.className = "precio"; pr.textContent = valor(p.precio) ? pesos(valor(p.precio)) : p.precio;
       const a = document.createElement("button"); a.className = "quiero"; a.textContent = "Agregar";
       a.onclick = () => {
         agregar(p);
-        a.textContent = "Agregado ✓";
-        clearTimeout(a._t); a._t = setTimeout(() => a.textContent = "Agregar", 1400);
+        avisar("Agregado: " + p.nombre);
+        a.textContent = "✓ Agregado"; a.classList.add("ok");
+        clearTimeout(a._t); a._t = setTimeout(() => { a.textContent = "Agregar"; a.classList.remove("ok"); }, 1600);
       };
       pie.append(pr, a); c.appendChild(pie);
       grilla.appendChild(c);
+      observar(c);
     });
   }
   function filtrosPintar(){
@@ -518,9 +597,50 @@ const LOGOS = {
   }
   $("abrirCarro").onclick = () => abrir(true);
   $("cerrarCarro").onclick = velo.onclick = () => abrir(false);
-  document.addEventListener("keydown", e => { if (e.key === "Escape") abrir(false); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape"){ cerrarModal(); abrir(false); } });
   $("vaciar").onclick = () => { CARRO = []; guardar(); pintarCarro(); };
   pintarCarro();
+
+  // ====== VISTA RÁPIDA ======
+  const modal = $("modal");
+  let actual = null, mCant = 1;
+  function abrirModal(p){
+    actual = p; mCant = 1; $("mCant").textContent = 1;
+    const f = $("mFoto");
+    f.style.backgroundImage = p.foto ? "url('" + foto(p.foto) + "')" : "";
+    f.textContent = p.foto ? "" : "[FOTO]";
+    $("mCat").textContent = p.categoria || "";
+    $("mNombre").textContent = p.nombre;
+    $("mPrecio").textContent = valor(p.precio) ? pesos(valor(p.precio)) : (p.precio || "");
+    $("mDesc").textContent = p.descripcion || "";
+    $("mWa").href = wa("Hola, quiero más información sobre esta pieza: " + p.nombre);
+    modal.classList.add("abierto"); modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    $("mCerrar").focus();
+  }
+  function cerrarModal(){
+    if (!modal.classList.contains("abierto")) return;
+    modal.classList.remove("abierto"); modal.setAttribute("aria-hidden", "true");
+    if (!panel.classList.contains("abierto")) document.body.style.overflow = "";
+  }
+  $("mCerrar").onclick = cerrarModal;
+  modal.addEventListener("click", e => { if (e.target === modal) cerrarModal(); });
+  $("mMenos").onclick = () => { mCant = Math.max(1, mCant - 1); $("mCant").textContent = mCant; };
+  $("mMas").onclick = () => { mCant = Math.min(20, mCant + 1); $("mCant").textContent = mCant; };
+  $("mAgregar").onclick = () => {
+    for (let k = 0; k < mCant; k++) agregar(actual);
+    cerrarModal();
+    avisar((mCant > 1 ? mCant + " × " : "Agregado: ") + actual.nombre);
+  };
+
+  // ====== AVISO "AGREGADO" ======
+  let tAviso;
+  function avisar(txt){
+    $("toastTxt").textContent = txt;
+    $("toast").classList.add("ver");
+    clearTimeout(tAviso); tAviso = setTimeout(() => $("toast").classList.remove("ver"), 3200);
+  }
+  $("toastVer").onclick = () => { $("toast").classList.remove("ver"); abrir(true); };
 
   // ====== ANIMACIONES DE LA INTRODUCCIÓN ======
   const sinMovimiento = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -534,14 +654,11 @@ const LOGOS = {
     })(t0);
   }
   const mostrar = (el) => { el.classList.add("visto"); el.querySelectorAll("[data-hasta]").forEach(contar); };
-  if ("IntersectionObserver" in window){
-    const obs = new IntersectionObserver(es => es.forEach(e => {
-      if (e.isIntersecting){ mostrar(e.target); obs.unobserve(e.target); }
-    }), { threshold: 0.2 });
-    document.querySelectorAll(".aparece").forEach(el => obs.observe(el));
-  } else {
-    document.querySelectorAll(".aparece").forEach(mostrar);
-  }
+  const obs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ mostrar(e.target); obs.unobserve(e.target); }
+  }), { threshold: 0.15 }) : null;
+  const observar = (el) => obs ? obs.observe(el) : mostrar(el);
+  document.querySelectorAll(".aparece").forEach(observar);
 
   // Tarjetas: se activan al pasar el mouse, con el teclado o al tocarlas en el celular
   const puntos = document.querySelectorAll(".punto");
