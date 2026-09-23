@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catálogo de bisutería</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ====== COLORES: cámbialos aquí ====== */
+  :root{
+    --fondo:#F7F3EE; --fondo2:#EFE8DF; --foto:#EDE5DA;
+    --tinta:#1E1B18; --texto:#4A443E; --suave:#6E6358;
+    --linea:#E3DAD0; --acento:#A67C3D; --acento-texto:#7A5823;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--fondo);color:var(--tinta);font-family:'Jost',sans-serif}
+  a{color:inherit;text-decoration:none}
+  .serif{font-family:'Cormorant Garamond',serif;font-weight:400}
+  .kicker{font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--acento-texto)}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+
+  .aviso{background:var(--tinta);color:#EDE6DC;text-align:center;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:300;padding:11px 16px}
+  header{border-bottom:1px solid var(--linea)}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;height:84px}
+  .logo{font-size:30px;letter-spacing:6px;text-transform:uppercase;font-weight:500}
+  .btn{display:inline-block;padding:16px 32px;font-size:13px;letter-spacing:2px;text-transform:uppercase;border:1px solid var(--tinta);cursor:pointer;background:none;font-family:inherit;color:var(--tinta)}
+  .btn.lleno{background:var(--tinta);color:var(--fondo)}
+  .btn:hover{opacity:.85}
+
+  .hero{display:grid;grid-template-columns:1fr 1fr;min-height:560px}
+  .hero-texto{padding:64px 48px 64px max(24px,calc((100vw - 1280px)/2 + 24px));display:flex;flex-direction:column;justify-content:center;gap:24px}
+  .hero h1{margin:0;font-size:clamp(46px,6vw,84px);line-height:1;letter-spacing:-1px}
+  .hero h1 em{color:var(--acento)}
+  .hero p{margin:0;font-size:18px;line-height:1.7;font-weight:300;color:var(--texto);max-width:460px}
+  .hero-foto{background:var(--foto) center/cover no-repeat;position:relative;min-height:420px}
+  .hero-foto::after{content:"";position:absolute;inset:32px;border:1px solid rgba(255,255,255,.55)}
+
+  section.bloque{padding:96px 0}
+  .titulo{text-align:center;display:flex;flex-direction:column;gap:10px;margin-bottom:40px}
+  .titulo h2{margin:0;font-size:clamp(34px,4vw,52px)}
+
+  .filtros{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:48px}
+  .filtros button{font-family:inherit;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:12px 20px;border:1px solid var(--linea);background:none;color:var(--texto);cursor:pointer;min-height:44px}
+  .filtros button.activo{border-color:var(--tinta);color:var(--tinta);background:#fff}
+
+  .grilla{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:28px;row-gap:56px}
+  .card{display:flex;flex-direction:column;gap:14px}
+  .card .img{aspect-ratio:4/5;background:var(--foto) center/cover no-repeat;position:relative;display:flex;align-items:center;justify-content:center;color:var(--suave);font-size:11px;letter-spacing:2px;text-transform:uppercase}
+  .card .tag{position:absolute;top:14px;left:14px;background:var(--fondo);padding:5px 11px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--tinta)}
+  .card .cat{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--suave)}
+  .card .nombre{font-size:25px;line-height:1.15}
+  .card .desc{font-size:14px;color:var(--texto);font-weight:300}
+  .card .pie{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--linea);padding-top:12px}
+  .card .precio{font-size:18px;font-weight:500}
+  .card .quiero{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;border-bottom:1px solid var(--acento);padding:12px 0 4px}
+
+  .comprar{background:var(--fondo2)}
+  .pasos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px;text-align:center}
+  .pasos .n{font-size:60px;font-style:italic;color:var(--acento);line-height:1}
+  .pasos h3{margin:14px 0 10px;font-size:15px;letter-spacing:2px;text-transform:uppercase;font-weight:500}
+  .pasos p{margin:0 auto;max-width:320px;font-size:16px;line-height:1.7;font-weight:300;color:var(--texto)}
+
+  footer{background:var(--tinta);color:#EDE6DC;padding:80px 0 40px}
+  .cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px}
+  .cols h4{margin:0 0 14px;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#D9BE8C;font-weight:400}
+  .cols p{margin:0 0 10px;font-size:15px;font-weight:300;line-height:1.6}
+  .legal{border-top:1px solid #3A3530;margin-top:56px;padding-top:24px;font-size:13px;color:#A99F93}
+
+  /* ====== TABLET ====== */
+  @media (max-width:1024px){ .grilla{grid-template-columns:repeat(3,minmax(0,1fr))} }
+  /* ====== MÓVIL ====== */
+  @media (max-width:700px){
+    header .wrap{height:64px} .logo{font-size:22px;letter-spacing:4px}
+    header .btn{padding:12px 14px;font-size:11px}
+    .hero{grid-template-columns:1fr} .hero-foto{order:-1;min-height:380px}
+    .hero-texto{padding:36px 20px} .hero p{font-size:16px}
+    .hero .acciones .btn{display:block;text-align:center}
+    section.bloque{padding:56px 0}
+    .filtros{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;margin-bottom:32px}
+    .filtros button{flex-shrink:0}
+    .grilla{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:14px;row-gap:36px}
+    .card .nombre{font-size:20px} .card .desc{display:none}
+    .card .pie{flex-direction:column;align-items:stretch;gap:10px}
+    .card .quiero{text-align:center;border:1px solid var(--tinta);padding:12px 0;font-size:11px}
+    .pasos,.cols{grid-template-columns:1fr;gap:36px}
+  }
+</style>
+</head>
+<body>
+
+<!-- =====================================================================
+     EDITA AQUÍ SOLO UNA VEZ (tus datos fijos).
+     Los PRODUCTOS se editan en tu hoja de Google Sheets.
+     ===================================================================== -->
+<script>
+const CONFIG = {
+  hojaGoogle: "https://docs.google.com/spreadsheets/d/1ZSyMuoMWBNuQID--ViRlU5IjR1CwYr0tJV3USYDQs8M/edit",
+  marca: "[TU MARCA]",
+  whatsapp: "573183901312",         // indicativo 57 + número, sin espacios ni +
+  instagram: "@tu_cuenta",
+  ciudad: "[CIUDAD], Colombia",
+  pagos: "[MEDIOS DE PAGO]",
+  envios: "[CONDICIONES DE ENVÍO]",
+  fotoPortada: ""                     // enlace de tu foto principal (también sirve de Google Drive)
+};
+</script>
+<!-- ===================================================================== -->
+
+<div class="aviso">Envíos a todo el país · Pedidos por WhatsApp</div>
+
+<header>
+  <div class="wrap">
+    <div class="logo serif" data-marca></div>
+    <a class="btn" data-wa target="_blank" rel="noopener">Pedir por WhatsApp</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-texto">
+    <div class="kicker">Nueva colección</div>
+    <h1 class="serif">Detalles que <em>brillan</em> contigo</h1>
+    <p>Bisutería fina diseñada para acompañar tu día a día. Aretes, collares, pulseras y anillos con acabados delicados y precios accesibles.</p>
+    <div class="acciones" style="display:flex;gap:14px;flex-wrap:wrap">
+      <a class="btn lleno" href="#catalogo">Ver catálogo</a>
+      <a class="btn" data-wa target="_blank" rel="noopener">Escríbenos</a>
+    </div>
+  </div>
+  <div class="hero-foto" id="heroFoto"></div>
+</section>
+
+<section class="bloque" id="catalogo">
+  <div class="wrap">
+    <div class="titulo"><div class="kicker">Catálogo</div><h2 class="serif">Piezas destacadas</h2></div>
+    <div class="filtros" id="filtros"></div>
+    <div class="grilla" id="grilla"></div>
+  </div>
+</section>
+
+<section class="bloque comprar">
+  <div class="wrap">
+    <div class="titulo"><div class="kicker">Fácil y seguro</div><h2 class="serif">Cómo comprar</h2></div>
+    <div class="pasos">
+      <div><div class="n serif">01</div><h3>Elige tus piezas</h3><p>Explora el catálogo y toca «Lo quiero» en lo que te guste.</p></div>
+      <div><div class="n serif">02</div><h3>Escríbenos</h3><p>Se abre WhatsApp con tu pedido listo; solo agrega tu ciudad.</p></div>
+      <div><div class="n serif">03</div><h3>Recíbelo</h3><p>Confirmamos el pago y enviamos tu pedido bien empacado.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="logo serif" data-marca style="margin-bottom:14px"></div><p style="color:#C9BFB3">Bisutería fina con amor por los detalles.</p></div>
+      <div><h4>Pedidos</h4><p>WhatsApp: <a data-wa target="_blank" rel="noopener" id="waTxt"></a></p><p id="ig"></p><p id="ciudad"></p></div>
+      <div><h4>Información</h4><p id="pagos"></p><p id="envios"></p><p>Cuidado: evita el agua y los perfumes.</p></div>
+    </div>
+    <div class="legal">© <span id="anio"></span> <span data-marca></span>. Todos los derechos reservados.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const wa = (msg) => "https://wa.me/" + CONFIG.whatsapp + (msg ? "?text=" + encodeURIComponent(msg) : "");
+  document.querySelectorAll("[data-marca]").forEach(e => e.textContent = CONFIG.marca);
+  document.querySelectorAll("[data-wa]").forEach(e => e.href = wa("Hola, quiero información sobre el catálogo de " + CONFIG.marca));
+  document.getElementById("waTxt").textContent = "+" + CONFIG.whatsapp;
+  document.getElementById("ig").textContent = "Instagram: " + CONFIG.instagram;
+  document.getElementById("ciudad").textContent = CONFIG.ciudad;
+  document.getElementById("pagos").textContent = "Medios de pago: " + CONFIG.pagos;
+  document.getElementById("envios").textContent = "Envíos: " + CONFIG.envios;
+  document.getElementById("anio").textContent = new Date().getFullYear();
+  
+
+  const grilla = document.getElementById("grilla");
+  const filtros = document.getElementById("filtros");
+  let PRODUCTOS = [];
+
+  // Convierte enlaces de Google Drive en imágenes visibles
+  function foto(url){
+    url = (url || "").trim();
+    const m = url.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=)([\w-]+)/);
+    return m ? "https://drive.google.com/thumbnail?id=" + m[1] + "&sz=w1200" : url;
+  }
+  // Lector de CSV (respeta comas dentro de comillas)
+  function csv(t){
+    const filas = []; let fila = [], campo = "", q = false;
+    for (let i = 0; i < t.length; i++){
+      const c = t[i];
+      if (q){ if (c === '"'){ if (t[i+1] === '"'){ campo += '"'; i++; } else q = false; } else campo += c; }
+      else if (c === '"') q = true;
+      else if (c === ","){ fila.push(campo); campo = ""; }
+      else if (c === "\n" || c === "\r"){ if (c === "\r" && t[i+1] === "\n") i++; fila.push(campo); filas.push(fila); fila = []; campo = ""; }
+      else campo += c;
+    }
+    if (campo || fila.length){ fila.push(campo); filas.push(fila); }
+    const cab = filas.shift().map(h => h.trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""));
+    return filas.filter(f => f.some(x => x.trim())).map(f => Object.fromEntries(cab.map((h, i) => [h, (f[i] || "").trim()])));
+  }
+  function urlHoja(u){
+    if (/output=csv|tqx=out:csv/.test(u)) return u;
+    const id = (u.match(/\/d\/([\w-]{20,})/) || [])[1];
+    return "https://docs.google.com/spreadsheets/d/" + id + "/gviz/tq?tqx=out:csv";
+  }
+
+  function pintar(cat){
+    grilla.innerHTML = "";
+    PRODUCTOS.filter(p => cat === "Todo" || p.categoria === cat).forEach(p => {
+      const c = document.createElement("div"); c.className = "card";
+      const img = document.createElement("div"); img.className = "img";
+      if (p.foto) img.style.backgroundImage = "url('" + foto(p.foto) + "')"; else img.textContent = "[Foto]";
+      if (p.etiqueta){ const t = document.createElement("span"); t.className = "tag"; t.textContent = p.etiqueta; img.appendChild(t); }
+      c.appendChild(img);
+      const info = document.createElement("div");
+      info.innerHTML = '<div class="cat"></div><div class="nombre serif"></div><div class="desc"></div>';
+      info.querySelector(".cat").textContent = p.categoria;
+      info.querySelector(".nombre").textContent = p.nombre;
+      info.querySelector(".desc").textContent = p.descripcion || "";
+      c.appendChild(info);
+      const pie = document.createElement("div"); pie.className = "pie";
+      const pr = document.createElement("div"); pr.className = "precio"; pr.textContent = p.precio;
+      const a = document.createElement("a"); a.className = "quiero"; a.textContent = "Lo quiero";
+      a.target = "_blank"; a.rel = "noopener";
+      a.href = wa("Hola, quiero esta pieza: " + p.nombre + (p.precio ? " (" + p.precio + ")" : ""));
+      pie.append(pr, a); c.appendChild(pie);
+      grilla.appendChild(c);
+    });
+  }
+  function filtrosPintar(){
+    filtros.innerHTML = "";
+    ["Todo", ...new Set(PRODUCTOS.map(p => p.categoria).filter(Boolean))].forEach((cat, i) => {
+      const b = document.createElement("button"); b.textContent = cat;
+      if (i === 0) b.classList.add("activo");
+      b.onclick = () => { filtros.querySelectorAll("button").forEach(x => x.classList.remove("activo")); b.classList.add("activo"); pintar(cat); };
+      filtros.appendChild(b);
+    });
+  }
+
+  if (CONFIG.fotoPortada) document.getElementById("heroFoto").style.backgroundImage = "url('" + foto(CONFIG.fotoPortada) + "')";
+  grilla.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--suave)">Cargando catálogo…</p>';
+  fetch(urlHoja(CONFIG.hojaGoogle) + "&t=" + Date.now())
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
+    .then(t => {
+      PRODUCTOS = csv(t).filter(p => p.nombre && !/^no$/i.test(p.disponible || ""));
+      filtrosPintar(); pintar("Todo");
+    })
+    .catch(() => {
+      grilla.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--suave)">No se pudo cargar el catálogo. Revisa que la hoja de Google esté compartida como «Cualquier persona con el enlace · Lector».</p>';
+    });
+})();
+</script>
+</body>
+</html>
