@@ -104,10 +104,48 @@
   .diferencia .lead{max-width:760px;margin:0 auto 48px;text-align:center;font-size:18px;line-height:1.8;font-weight:300;color:var(--texto)}
   .diferencia .lead strong{font-weight:500;color:var(--tinta)}
   .puntos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
-  .punto{background:#fff;border:1px solid var(--linea);padding:36px 30px}
-  .punto .n{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:52px;line-height:1;color:var(--acento)}
-  .punto h3{margin:14px 0 12px;font-size:14px;letter-spacing:2px;text-transform:uppercase;font-weight:500}
-  .punto p{margin:0;font-size:15px;line-height:1.75;font-weight:300;color:var(--texto)}
+  .puntos > div{display:flex}
+  .punto{position:relative;overflow:hidden;flex:1;background:#fff;border:1px solid var(--linea);padding:36px 30px;cursor:pointer;outline:none;
+    transition:transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .45s,background-color .45s,border-color .45s}
+  .punto::before{content:"";position:absolute;left:0;top:0;height:3px;width:0;background:var(--acento);transition:width .6s ease}
+  .punto .top{display:flex;justify-content:space-between;align-items:flex-start}
+  .punto .n{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:52px;line-height:1;color:var(--acento);transition:color .45s}
+  .punto h3{margin:14px 0 12px;font-size:14px;letter-spacing:2px;text-transform:uppercase;font-weight:500;transition:color .45s}
+  .punto p{margin:0;font-size:15px;line-height:1.75;font-weight:300;color:var(--texto);transition:color .45s}
+  .punto .icono{width:58px;height:58px}
+  .punto.activo{transform:translateY(-8px);background:var(--tinta);border-color:var(--tinta);box-shadow:0 28px 50px -26px rgba(61,10,54,.55)}
+  .punto.activo::before{width:100%}
+  .punto.activo .n{color:var(--claro2)}
+  .punto.activo h3{color:#fff}
+  .punto.activo p{color:var(--claro3)}
+  .punto.activo .icono path{stroke:var(--claro2);animation:dibuja 1.3s ease both}
+  .punto:focus-visible{box-shadow:0 0 0 3px var(--acento)}
+
+  /* Líneas de alambre que se dibujan solas */
+  .trazo path{fill:none;stroke:var(--acento);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 2.2s ease .3s}
+  .visto .trazo path{stroke-dashoffset:0}
+  @keyframes dibuja{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+  .firma{display:block;width:min(300px,80%);height:auto;margin-top:6px}
+
+  /* Frases resaltadas que se subrayan al aparecer */
+  mark.resalta{background:linear-gradient(transparent 60%,rgba(184,112,79,.25) 60%) no-repeat left/0% 100%;color:inherit;transition:background-size 1.3s ease .6s}
+  .visto mark.resalta{background-size:100% 100%}
+
+  /* Cifras */
+  .cifras{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:72px;text-align:center}
+  .cifra .num{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,5vw,64px);line-height:1;color:var(--tinta)}
+  .cifra .num small{font-size:.5em;color:var(--acento)}
+  .cifra .lbl{margin-top:10px;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--suave)}
+
+  /* Aparecer al hacer scroll (solo si hay JavaScript) */
+  .js .aparece{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+  .js .aparece.visto{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .js .aparece{opacity:1;transform:none;transition:none}
+    .trazo path{stroke-dashoffset:0;transition:none}
+    .punto.activo .icono path{animation:none}
+    mark.resalta{background-size:100% 100%;transition:none}
+  }
   .lema{margin-top:88px;text-align:center}
   .lema blockquote{margin:0 auto;max-width:860px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(30px,4vw,50px);line-height:1.2;color:var(--tinta)}
   .lema blockquote span{color:var(--acento)}
@@ -156,6 +194,7 @@
     .intro-texto p,.diferencia .lead{font-size:16px}
     .diferencia,.lema{margin-top:56px} .diferencia{padding-top:48px}
     .puntos{grid-template-columns:1fr;gap:16px} .punto{padding:28px 22px}
+    .cifras{margin-top:48px;gap:12px} .cifra .lbl{font-size:10px;letter-spacing:1.5px}
   }
   @media (max-width:400px){
     .marca-top img{width:44px;height:44px} .marca-top .logo{font-size:15px;letter-spacing:1px}
@@ -169,6 +208,7 @@
      Los PRODUCTOS se editan en tu hoja de Google Sheets.
      ===================================================================== -->
 <script>
+document.documentElement.classList.add("js");
 const CONFIG = {
   hojaGoogle: "https://docs.google.com/spreadsheets/d/1ZSyMuoMWBNuQID--ViRlU5IjR1CwYr0tJV3USYDQs8M/edit",
   marca: "Julice Bisutería",
@@ -231,27 +271,43 @@ const CONFIG = {
 <section class="bloque" id="nosotros">
   <div class="wrap">
     <div class="intro-top">
-      <div>
+      <div class="aparece">
         <div class="kicker">Nuestra esencia</div>
         <h2 class="serif">Piezas de arte <em>portables</em></h2>
+        <svg class="trazo firma" viewBox="0 0 320 60" aria-hidden="true"><path pathLength="1" d="M4 42 C 30 8, 64 8, 84 34 S 128 62, 150 32 S 196 2, 222 30 S 280 58, 316 18"/></svg>
       </div>
-      <div class="intro-texto">
-        <p>En Julice, no solo creamos accesorios; diseñamos piezas de arte portables que capturan la esencia de la mujer contemporánea. Inspiradas en la fluidez de la naturaleza y la elegancia clásica, nuestras joyas son elaboradas meticulosamente a mano mediante la técnica del alambrismo fino.</p>
-        <p>Cada curva, cada engaste y cada detalle está pensado para resaltar tu autenticidad. Utilizamos materiales de alta calidad para garantizar que tu complemento favorito no sea solo una tendencia, sino un tesoro que te acompañe en tus momentos más especiales.</p>
+      <div class="intro-texto aparece" style="--d:.15s">
+        <p>En Julice, no solo creamos accesorios; diseñamos <mark class="resalta">piezas de arte portables</mark> que capturan la esencia de la mujer contemporánea. Inspiradas en la fluidez de la naturaleza y la elegancia clásica, nuestras joyas son elaboradas meticulosamente a mano mediante la técnica del <mark class="resalta">alambrismo fino</mark>.</p>
+        <p>Cada curva, cada engaste y cada detalle está pensado para resaltar tu autenticidad. Utilizamos materiales de alta calidad para garantizar que tu complemento favorito no sea solo una tendencia, sino <mark class="resalta">un tesoro que te acompañe</mark> en tus momentos más especiales.</p>
       </div>
+    </div>
+
+    <div class="cifras aparece">
+      <div class="cifra"><div class="num"><span data-hasta="100">100</span><small>%</small></div><div class="lbl">Hecho a mano</div></div>
+      <div class="cifra"><div class="num">0</div><div class="lbl">Moldes industriales</div></div>
+      <div class="cifra"><div class="num">1<small> de </small>1</div><div class="lbl">Cada pieza es única</div></div>
     </div>
 
     <div class="diferencia">
-      <div class="titulo" style="margin-bottom:24px"><div class="kicker">La diferencia Julice</div><h2 class="serif">Ingeniería del metal, sensibilidad del diseño</h2></div>
-      <p class="lead">Aunque existen muchas marcas de bisutería, la diferencia de Julice radica en <strong>el equilibrio entre la ingeniería del metal y la sensibilidad del diseño</strong>. Mientras que la bisutería convencional suele ser producida en serie o utiliza el alambrismo de forma genérica, nosotros nos distinguimos por:</p>
+      <div class="titulo aparece" style="margin-bottom:24px"><div class="kicker">La diferencia Julice</div><h2 class="serif">Ingeniería del metal, sensibilidad del diseño</h2></div>
+      <p class="lead aparece" style="--d:.1s">Aunque existen muchas marcas de bisutería, la diferencia de Julice radica en <strong>el equilibrio entre la ingeniería del metal y la sensibilidad del diseño</strong>. Mientras que la bisutería convencional suele ser producida en serie o utiliza el alambrismo de forma genérica, nosotros nos distinguimos por:</p>
       <div class="puntos">
-        <div class="punto"><div class="n">01</div><h3>Diseño anatómico y orgánico</h3><p>A diferencia de las piezas rígidas, nuestro alambrismo está diseñado para adaptarse al movimiento y la forma del cuerpo, emulando la ligereza de un encaje.</p></div>
-        <div class="punto"><div class="n">02</div><h3>Trazado único</h3><p>Al ser piezas hechas 100% a mano sin moldes industriales, cada giro del alambre es irrepetible. No vendemos un producto, vendemos una «escultura en miniatura».</p></div>
-        <div class="punto"><div class="n">03</div><h3>Narrativa visual</h3><p>No solo unimos cuentas; creamos estructuras que protegen y realzan la piedra o el cristal, convirtiendo el metal en el protagonista de la joya y no solo en un soporte.</p></div>
+        <div class="aparece" style="--d:0s"><div class="punto" tabindex="0" role="button" aria-pressed="false">
+          <div class="top"><div class="n">01</div>
+            <svg class="trazo icono" viewBox="0 0 64 64" aria-hidden="true"><path pathLength="1" d="M6 38 C14 20 22 20 26 32 S36 48 42 34 S52 16 58 26"/><path pathLength="1" d="M6 48 C18 38 28 56 40 46 S54 40 58 46"/></svg></div>
+          <h3>Diseño anatómico y orgánico</h3><p>A diferencia de las piezas rígidas, nuestro alambrismo está diseñado para adaptarse al movimiento y la forma del cuerpo, emulando la ligereza de un encaje.</p></div></div>
+        <div class="aparece" style="--d:.15s"><div class="punto" tabindex="0" role="button" aria-pressed="false">
+          <div class="top"><div class="n">02</div>
+            <svg class="trazo icono" viewBox="0 0 64 64" aria-hidden="true"><path pathLength="1" d="M33 33 c3 0 5 2 5 5 c0 5 -5 8 -10 8 c-7 0 -12 -6 -12 -13 c0 -9 8 -16 17 -16 c11 0 19 9 19 20 c0 12 -10 21 -22 21"/></svg></div>
+          <h3>Trazado único</h3><p>Al ser piezas hechas 100% a mano sin moldes industriales, cada giro del alambre es irrepetible. No vendemos un producto, vendemos una «escultura en miniatura».</p></div></div>
+        <div class="aparece" style="--d:.3s"><div class="punto" tabindex="0" role="button" aria-pressed="false">
+          <div class="top"><div class="n">03</div>
+            <svg class="trazo icono" viewBox="0 0 64 64" aria-hidden="true"><path pathLength="1" d="M32 12 L46 28 L32 52 L18 28 Z M18 28 H46"/><path pathLength="1" d="M8 22 C20 14 44 14 56 22 M8 42 C22 52 42 52 56 42"/></svg></div>
+          <h3>Narrativa visual</h3><p>No solo unimos cuentas; creamos estructuras que protegen y realzan la piedra o el cristal, convirtiendo el metal en el protagonista de la joya y no solo en un soporte.</p></div></div>
       </div>
     </div>
 
-    <div class="lema">
+    <div class="lema aparece">
       <blockquote>“Julice: la delicadeza del metal, <span>la fuerza de tu estilo.</span>”</blockquote>
       <div class="contacto">
         <span>WhatsApp <a data-wa target="_blank" rel="noopener">318 390 1312</a></span>
@@ -465,6 +521,47 @@ const LOGOS = {
   document.addEventListener("keydown", e => { if (e.key === "Escape") abrir(false); });
   $("vaciar").onclick = () => { CARRO = []; guardar(); pintarCarro(); };
   pintarCarro();
+
+  // ====== ANIMACIONES DE LA INTRODUCCIÓN ======
+  const sinMovimiento = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function contar(el){
+    const fin = +el.dataset.hasta, t0 = performance.now(), dur = 1600;
+    if (sinMovimiento) return;
+    (function paso(t){
+      const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = Math.round(fin * e);
+      if (k < 1) requestAnimationFrame(paso);
+    })(t0);
+  }
+  const mostrar = (el) => { el.classList.add("visto"); el.querySelectorAll("[data-hasta]").forEach(contar); };
+  if ("IntersectionObserver" in window){
+    const obs = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting){ mostrar(e.target); obs.unobserve(e.target); }
+    }), { threshold: 0.2 });
+    document.querySelectorAll(".aparece").forEach(el => obs.observe(el));
+  } else {
+    document.querySelectorAll(".aparece").forEach(mostrar);
+  }
+
+  // Tarjetas: se activan al pasar el mouse, con el teclado o al tocarlas en el celular
+  const puntos = document.querySelectorAll(".punto");
+  const activar = (p, si) => { p.classList.toggle("activo", si); p.setAttribute("aria-pressed", si); };
+  puntos.forEach(p => {
+    let tipo = "mouse";
+    p.addEventListener("pointerdown", e => tipo = e.pointerType);
+    p.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") activar(p, true); });
+    p.addEventListener("pointerleave", e => { if (e.pointerType === "mouse") activar(p, false); });
+    p.addEventListener("click", () => {
+      if (tipo === "mouse") return;
+      const si = !p.classList.contains("activo");
+      puntos.forEach(x => activar(x, false));
+      activar(p, si);
+    });
+    p.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " "){ e.preventDefault(); activar(p, !p.classList.contains("activo")); }
+    });
+    p.addEventListener("blur", () => activar(p, false));
+  });
 
   $("logoImg").src = CONFIG.logo ? foto(CONFIG.logo) : LOGOS.circulo; $("logoImg").alt = CONFIG.marca;
   document.querySelector("link[rel=icon]").href = $("logoImg").src;
