@@ -53,7 +53,39 @@
   .card .desc{font-size:14px;color:var(--texto);font-weight:300}
   .card .pie{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--linea);padding-top:12px}
   .card .precio{font-size:18px;font-weight:500}
-  .card .quiero{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;border-bottom:1px solid var(--acento);padding:12px 0 4px}
+  .card .quiero{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;border:0;border-bottom:1px solid var(--acento);padding:12px 0 4px;background:none;font-family:inherit;color:var(--tinta);cursor:pointer}
+
+  /* ====== CARRITO ====== */
+  .top-acciones{display:flex;align-items:center;gap:10px}
+  .carro-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 18px;border:1px solid var(--tinta);background:none;cursor:pointer;font-family:inherit;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--tinta)}
+  .carro-btn svg{width:18px;height:18px}
+  .contador{background:var(--tinta);color:var(--fondo);border-radius:999px;min-width:22px;height:22px;padding:0 6px;font-size:12px;letter-spacing:0;display:inline-flex;align-items:center;justify-content:center}
+  .contador.salta{animation:salta .35s}
+  @keyframes salta{50%{transform:scale(1.35)}}
+  .velo{position:fixed;inset:0;background:rgba(30,27,24,.45);opacity:0;pointer-events:none;transition:opacity .25s;z-index:50}
+  .velo.abierto{opacity:1;pointer-events:auto}
+  .panel{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:var(--fondo);z-index:51;transform:translateX(100%);transition:transform .3s ease,visibility .3s;display:flex;flex-direction:column;visibility:hidden}
+  .panel.abierto{transform:none;visibility:visible}
+  .panel-cab{display:flex;justify-content:space-between;align-items:center;padding:calc(18px + env(safe-area-inset-top,0px)) 24px 18px;border-bottom:1px solid var(--linea)}
+  .panel-cab h3{margin:0;font-size:30px}
+  .cerrar{border:0;background:none;font-size:28px;line-height:1;cursor:pointer;color:var(--tinta);width:44px;height:44px}
+  .panel-lista{flex:1;overflow-y:auto;padding:0 24px}
+  .vacio{text-align:center;color:var(--suave);padding:56px 0;line-height:1.7}
+  .item{display:grid;grid-template-columns:64px 1fr;gap:14px;padding:18px 0;border-bottom:1px solid var(--linea)}
+  .item .mini{width:64px;aspect-ratio:4/5;background:var(--foto) center/cover no-repeat}
+  .item .n{font-size:21px;line-height:1.15}
+  .item .p{font-size:14px;color:var(--texto);margin-top:4px}
+  .item .fila{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+  .cant{display:inline-flex;align-items:center;border:1px solid var(--linea)}
+  .cant button{width:36px;height:36px;border:0;background:none;cursor:pointer;font-size:17px;color:var(--tinta);font-family:inherit}
+  .cant span{min-width:28px;text-align:center;font-size:15px}
+  .quitar{border:0;background:none;cursor:pointer;font-family:inherit;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--suave);text-decoration:underline;padding:10px 0}
+  .panel-pie{padding:20px 24px calc(20px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--linea);display:flex;flex-direction:column;gap:12px;background:var(--fondo2)}
+  .total{display:flex;justify-content:space-between;align-items:baseline;font-size:15px;letter-spacing:1.5px;text-transform:uppercase}
+  .total strong{font-size:22px;letter-spacing:0}
+  .panel-pie .nota{font-size:13px;color:var(--suave);margin:0}
+  .panel-pie .btn{text-align:center}
+  .panel-pie .btn[aria-disabled="true"]{opacity:.4;pointer-events:none}
 
   .comprar{background:var(--fondo2)}
   .pasos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px;text-align:center}
@@ -72,7 +104,8 @@
   /* ====== MÓVIL ====== */
   @media (max-width:700px){
     header .wrap{height:64px} .logo{font-size:22px;letter-spacing:4px}
-    header .btn{padding:12px 14px;font-size:11px}
+    header .btn[data-wa]{display:none}
+    .carro-btn{padding:10px 12px} .carro-btn .txt{display:none}
     .hero{grid-template-columns:1fr} .hero-foto{order:-1;min-height:380px}
     .hero-texto{padding:36px 20px} .hero p{font-size:16px}
     .hero .acciones .btn{display:block;text-align:center}
@@ -112,9 +145,31 @@ const CONFIG = {
 <header>
   <div class="wrap">
     <div class="logo serif" data-marca></div>
-    <a class="btn" data-wa target="_blank" rel="noopener">Pedir por WhatsApp</a>
+    <div class="top-acciones">
+      <a class="btn" data-wa target="_blank" rel="noopener">Pedir por WhatsApp</a>
+      <button class="carro-btn" id="abrirCarro" aria-label="Abrir carrito">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <span class="txt">Carrito</span>
+        <span class="contador" id="contador">0</span>
+      </button>
+    </div>
   </div>
 </header>
+
+<div class="velo" id="velo"></div>
+<aside class="panel" id="panel" aria-label="Carrito de compras">
+  <div class="panel-cab">
+    <h3 class="serif">Tu carrito</h3>
+    <button class="cerrar" id="cerrarCarro" aria-label="Cerrar carrito">×</button>
+  </div>
+  <div class="panel-lista" id="lista"></div>
+  <div class="panel-pie">
+    <div class="total"><span>Total</span><strong id="total">$ 0</strong></div>
+    <p class="nota">El envío se confirma por WhatsApp según tu ciudad.</p>
+    <a class="btn lleno" id="enviarPedido" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a>
+    <button class="quitar" id="vaciar" style="align-self:center">Vaciar carrito</button>
+  </div>
+</aside>
 
 <section class="hero">
   <div class="hero-texto">
@@ -141,8 +196,8 @@ const CONFIG = {
   <div class="wrap">
     <div class="titulo"><div class="kicker">Fácil y seguro</div><h2 class="serif">Cómo comprar</h2></div>
     <div class="pasos">
-      <div><div class="n serif">01</div><h3>Elige tus piezas</h3><p>Explora el catálogo y toca «Lo quiero» en lo que te guste.</p></div>
-      <div><div class="n serif">02</div><h3>Escríbenos</h3><p>Se abre WhatsApp con tu pedido listo; solo agrega tu ciudad.</p></div>
+      <div><div class="n serif">01</div><h3>Elige tus piezas</h3><p>Explora el catálogo y toca «Agregar» en lo que te guste.</p></div>
+      <div><div class="n serif">02</div><h3>Envía tu pedido</h3><p>Abre el carrito y toca «Enviar pedido»: se abre WhatsApp con tu pedido listo; solo agrega tu ciudad.</p></div>
       <div><div class="n serif">03</div><h3>Recíbelo</h3><p>Confirmamos el pago y enviamos tu pedido bien empacado.</p></div>
     </div>
   </div>
@@ -219,9 +274,12 @@ const CONFIG = {
       c.appendChild(info);
       const pie = document.createElement("div"); pie.className = "pie";
       const pr = document.createElement("div"); pr.className = "precio"; pr.textContent = p.precio;
-      const a = document.createElement("a"); a.className = "quiero"; a.textContent = "Lo quiero";
-      a.target = "_blank"; a.rel = "noopener";
-      a.href = wa("Hola, quiero esta pieza: " + p.nombre + (p.precio ? " (" + p.precio + ")" : ""));
+      const a = document.createElement("button"); a.className = "quiero"; a.textContent = "Agregar";
+      a.onclick = () => {
+        agregar(p);
+        a.textContent = "Agregado ✓";
+        clearTimeout(a._t); a._t = setTimeout(() => a.textContent = "Agregar", 1400);
+      };
       pie.append(pr, a); c.appendChild(pie);
       grilla.appendChild(c);
     });
@@ -236,12 +294,84 @@ const CONFIG = {
     });
   }
 
+  // ====== CARRITO ======
+  const CLAVE = "carrito-" + CONFIG.whatsapp;
+  let CARRO = [];
+  try { CARRO = JSON.parse(localStorage.getItem(CLAVE)) || []; } catch (e) { CARRO = []; }
+  const $ = (id) => document.getElementById(id);
+  const panel = $("panel"), velo = $("velo"), lista = $("lista");
+
+  // "$ 25.000" -> 25000
+  const valor = (precio) => parseInt(String(precio || "").replace(/[^\d]/g, ""), 10) || 0;
+  const pesos = (n) => "$ " + n.toLocaleString("es-CO");
+
+  function guardar(){ try { localStorage.setItem(CLAVE, JSON.stringify(CARRO)); } catch (e) {} }
+  function agregar(p){
+    const it = CARRO.find(i => i.nombre === p.nombre);
+    if (it) it.cant++; else CARRO.push({ nombre: p.nombre, precio: p.precio, foto: p.foto, cant: 1 });
+    guardar(); pintarCarro();
+    const c = $("contador"); c.classList.remove("salta"); void c.offsetWidth; c.classList.add("salta");
+  }
+  function cambiar(nombre, d){
+    const it = CARRO.find(i => i.nombre === nombre); if (!it) return;
+    it.cant += d;
+    if (it.cant <= 0) CARRO = CARRO.filter(i => i !== it);
+    guardar(); pintarCarro();
+  }
+  function pintarCarro(){
+    const unidades = CARRO.reduce((s, i) => s + i.cant, 0);
+    const total = CARRO.reduce((s, i) => s + valor(i.precio) * i.cant, 0);
+    $("contador").textContent = unidades;
+    $("total").textContent = pesos(total);
+    lista.innerHTML = "";
+    if (!CARRO.length){
+      lista.innerHTML = '<p class="vacio">Tu carrito está vacío.<br>Toca «Agregar» en las piezas que te gusten.</p>';
+    }
+    CARRO.forEach(i => {
+      const el = document.createElement("div"); el.className = "item";
+      el.innerHTML = '<div class="mini"></div><div><div class="n serif"></div><div class="p"></div>' +
+        '<div class="fila"><div class="cant"><button aria-label="Quitar uno">−</button><span></span><button aria-label="Agregar uno">+</button></div>' +
+        '<button class="quitar">Quitar</button></div></div>';
+      if (i.foto) el.querySelector(".mini").style.backgroundImage = "url('" + foto(i.foto) + "')";
+      el.querySelector(".n").textContent = i.nombre;
+      el.querySelector(".p").textContent = valor(i.precio) ? pesos(valor(i.precio)) + (i.cant > 1 ? " c/u · " + pesos(valor(i.precio) * i.cant) : "") : (i.precio || "");
+      el.querySelector(".cant span").textContent = i.cant;
+      const [menos, mas] = el.querySelectorAll(".cant button");
+      menos.onclick = () => cambiar(i.nombre, -1);
+      mas.onclick = () => cambiar(i.nombre, +1);
+      el.querySelector(".quitar").onclick = () => cambiar(i.nombre, -i.cant);
+      lista.appendChild(el);
+    });
+    const enviar = $("enviarPedido");
+    enviar.setAttribute("aria-disabled", CARRO.length ? "false" : "true");
+    enviar.href = wa(
+      "Hola, quiero hacer este pedido en " + CONFIG.marca + ":\n\n" +
+      CARRO.map(i => "• " + i.cant + " x " + i.nombre + (valor(i.precio) ? " — " + pesos(valor(i.precio) * i.cant) : "")).join("\n") +
+      (total ? "\n\nTotal: " + pesos(total) : "") +
+      "\n\nMi ciudad: "
+    );
+    $("vaciar").hidden = !CARRO.length;
+  }
+  function abrir(si){
+    panel.classList.toggle("abierto", si); velo.classList.toggle("abierto", si);
+    document.body.style.overflow = si ? "hidden" : "";
+  }
+  $("abrirCarro").onclick = () => abrir(true);
+  $("cerrarCarro").onclick = velo.onclick = () => abrir(false);
+  document.addEventListener("keydown", e => { if (e.key === "Escape") abrir(false); });
+  $("vaciar").onclick = () => { CARRO = []; guardar(); pintarCarro(); };
+  pintarCarro();
+
   if (CONFIG.fotoPortada) document.getElementById("heroFoto").style.backgroundImage = "url('" + foto(CONFIG.fotoPortada) + "')";
   grilla.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--suave)">Cargando catálogo…</p>';
   fetch(urlHoja(CONFIG.hojaGoogle) + "&t=" + Date.now())
     .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
     .then(t => {
       PRODUCTOS = csv(t).filter(p => p.nombre && !/^no$/i.test(p.disponible || ""));
+      // Actualiza el carrito con los precios de la hoja y quita piezas ya no disponibles
+      CARRO = CARRO.filter(i => PRODUCTOS.some(p => p.nombre === i.nombre))
+                   .map(i => { const p = PRODUCTOS.find(p => p.nombre === i.nombre); return { ...i, precio: p.precio, foto: p.foto }; });
+      guardar(); pintarCarro();
       filtrosPintar(); pintar("Todo");
     })
     .catch(() => {
