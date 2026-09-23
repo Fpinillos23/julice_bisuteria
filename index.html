@@ -4,14 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Julice Bisutería · Catálogo</title>
+<link rel="icon" href="logo-circulo.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  /* ====== COLORES: cámbialos aquí ====== */
+  /* ====== COLORES (tomados del logo): cámbialos aquí ====== */
   :root{
-    --fondo:#F7F3EE; --fondo2:#EFE8DF; --foto:#EDE5DA;
-    --tinta:#1E1B18; --texto:#4A443E; --suave:#6E6358;
-    --linea:#E3DAD0; --acento:#A67C3D; --acento-texto:#7A5823;
+    --fondo:#F6EFE2; --fondo2:#EFE2D8; --foto:#EDE0D6;          /* crema del papel */
+    --tinta:#3D0A36; --texto:#5A3A55; --suave:#76596F;          /* ciruela del nombre */
+    --linea:#E6D5CF; --acento:#B8704F; --acento-texto:#8E4A33;  /* cobre / oro rosa del aro */
+    --claro:#F3E6EC; --claro2:#E8A98A; --claro3:#D2BACB; --oscuro2:#5C2653;  /* textos sobre fondo ciruela */
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--fondo);color:var(--tinta);font-family:'Jost',sans-serif}
@@ -20,10 +22,13 @@
   .kicker{font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--acento-texto)}
   .wrap{max-width:1280px;margin:0 auto;padding:0 24px}
 
-  .aviso{background:var(--tinta);color:#EDE6DC;text-align:center;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:300;padding:11px 16px}
+  .aviso{background:var(--tinta);color:var(--claro);text-align:center;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:300;padding:11px 16px}
   header{border-bottom:1px solid var(--linea)}
-  header .wrap{display:flex;align-items:center;justify-content:space-between;height:84px}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:96px}
   .logo{font-size:30px;letter-spacing:6px;text-transform:uppercase;font-weight:500}
+  .marca-top{display:flex;align-items:center;gap:14px;min-width:0}
+  .marca-top img{width:72px;height:72px;border-radius:50%;flex-shrink:0}
+  .marca-top .logo{font-size:26px;letter-spacing:5px;color:var(--tinta);white-space:nowrap}
   .btn{display:inline-block;padding:16px 32px;font-size:13px;letter-spacing:2px;text-transform:uppercase;border:1px solid var(--tinta);cursor:pointer;background:none;font-family:inherit;color:var(--tinta)}
   .btn.lleno{background:var(--tinta);color:var(--fondo)}
   .btn:hover{opacity:.85}
@@ -35,6 +40,8 @@
   .hero p{margin:0;font-size:18px;line-height:1.7;font-weight:300;color:var(--texto);max-width:460px}
   .hero-foto{background:var(--foto) center/cover no-repeat;position:relative;min-height:420px}
   .hero-foto::after{content:"";position:absolute;inset:32px;border:1px solid rgba(255,255,255,.55)}
+  .hero-foto.es-logo{background-color:#F4ECDB;background-size:auto 86%}
+  .hero-foto.es-logo::after{border-color:rgba(184,112,79,.35)}
 
   section.bloque{padding:96px 0}
   .titulo{text-align:center;display:flex;flex-direction:column;gap:10px;margin-bottom:40px}
@@ -93,17 +100,25 @@
   .pasos h3{margin:14px 0 10px;font-size:15px;letter-spacing:2px;text-transform:uppercase;font-weight:500}
   .pasos p{margin:0 auto;max-width:320px;font-size:16px;line-height:1.7;font-weight:300;color:var(--texto)}
 
-  footer{background:var(--tinta);color:#EDE6DC;padding:80px 0 40px}
+  .insta{text-align:center}
+  .insta .icono{width:64px;height:64px;margin:0 auto 20px;border-radius:18px;display:flex;align-items:center;justify-content:center;color:#fff;background:linear-gradient(135deg,var(--acento),var(--tinta))}
+  .insta .icono svg{width:32px;height:32px}
+  .insta h2{margin:0 0 14px;font-size:clamp(28px,4vw,48px);overflow-wrap:anywhere}
+  .insta p{margin:0 auto 32px;max-width:520px;font-size:17px;line-height:1.7;font-weight:300;color:var(--texto)}
+  footer a{text-decoration:underline;text-underline-offset:3px}
+  footer{background:var(--tinta);color:var(--claro);padding:80px 0 40px}
   .cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px}
-  .cols h4{margin:0 0 14px;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#D9BE8C;font-weight:400}
+  .cols h4{margin:0 0 14px;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--claro2);font-weight:400}
   .cols p{margin:0 0 10px;font-size:15px;font-weight:300;line-height:1.6}
-  .legal{border-top:1px solid #3A3530;margin-top:56px;padding-top:24px;font-size:13px;color:#A99F93}
+  .legal{border-top:1px solid var(--oscuro2);margin-top:56px;padding-top:24px;font-size:13px;color:var(--claro3)}
 
   /* ====== TABLET ====== */
   @media (max-width:1024px){ .grilla{grid-template-columns:repeat(3,minmax(0,1fr))} }
   /* ====== MÓVIL ====== */
   @media (max-width:700px){
-    header .wrap{height:64px} .logo{font-size:22px;letter-spacing:4px}
+    header .wrap{height:72px} .logo{font-size:22px;letter-spacing:4px}
+    .marca-top{gap:10px} .marca-top img{width:52px;height:52px}
+    .marca-top .logo{font-size:17px;letter-spacing:2px}
     header .btn[data-wa]{display:none}
     .carro-btn{padding:10px 12px} .carro-btn .txt{display:none}
     .hero{grid-template-columns:1fr} .hero-foto{order:-1;min-height:380px}
@@ -118,6 +133,9 @@
     .card .quiero{text-align:center;border:1px solid var(--tinta);padding:12px 0;font-size:11px}
     .pasos,.cols{grid-template-columns:1fr;gap:36px}
   }
+  @media (max-width:400px){
+    .marca-top img{width:44px;height:44px} .marca-top .logo{font-size:15px;letter-spacing:1px}
+  }
 </style>
 </head>
 <body>
@@ -131,10 +149,12 @@ const CONFIG = {
   hojaGoogle: "https://docs.google.com/spreadsheets/d/1ZSyMuoMWBNuQID--ViRlU5IjR1CwYr0tJV3USYDQs8M/edit",
   marca: "Julice Bisutería",
   whatsapp: "573183901312",         // indicativo 57 + número, sin espacios ni +
-  instagram: "@tu_cuenta",
+  instagram: "juliceaccessoriestore",  // solo el usuario, sin @
   ciudad: "[CIUDAD], Colombia",
   pagos: "[MEDIOS DE PAGO]",
   envios: "[CONDICIONES DE ENVÍO]",
+  logo: "logo-circulo.jpg",           // logo pequeño del encabezado
+  logoCompleto: "logo.jpg",           // se muestra en la portada mientras no haya foto
   fotoPortada: ""                     // enlace de tu foto principal (también sirve de Google Drive)
 };
 </script>
@@ -144,7 +164,7 @@ const CONFIG = {
 
 <header>
   <div class="wrap">
-    <div class="logo serif" data-marca></div>
+    <a class="marca-top" href="#"><img id="logoImg" alt=""><span class="logo serif" data-marca></span></a>
     <div class="top-acciones">
       <a class="btn" data-wa target="_blank" rel="noopener">Pedir por WhatsApp</a>
       <button class="carro-btn" id="abrirCarro" aria-label="Abrir carrito">
@@ -203,10 +223,22 @@ const CONFIG = {
   </div>
 </section>
 
+<section class="bloque insta" id="instagram">
+  <div class="wrap">
+    <div class="icono" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+    </div>
+    <div class="kicker" style="margin-bottom:10px">Síguenos en Instagram</div>
+    <h2 class="serif" id="igUsuario"></h2>
+    <p>Mira nuestras novedades, piezas nuevas y promociones antes que nadie. ¡Te esperamos!</p>
+    <a class="btn lleno" id="igBoton" target="_blank" rel="noopener">Ver nuestro Instagram</a>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
     <div class="cols">
-      <div><div class="logo serif" data-marca style="margin-bottom:14px"></div><p style="color:#C9BFB3">Bisutería fina con amor por los detalles.</p></div>
+      <div><div class="logo serif" data-marca style="margin-bottom:14px"></div><p style="color:var(--claro3)">Bisutería fina con amor por los detalles.</p></div>
       <div><h4>Pedidos</h4><p>WhatsApp: <a data-wa target="_blank" rel="noopener" id="waTxt"></a></p><p id="ig"></p><p id="ciudad"></p></div>
       <div><h4>Información</h4><p id="pagos"></p><p id="envios"></p><p>Cuidado: evita el agua y los perfumes.</p></div>
     </div>
@@ -220,7 +252,12 @@ const CONFIG = {
   document.querySelectorAll("[data-marca]").forEach(e => e.textContent = CONFIG.marca);
   document.querySelectorAll("[data-wa]").forEach(e => e.href = wa("Hola, quiero información sobre el catálogo de " + CONFIG.marca));
   document.getElementById("waTxt").textContent = "+" + CONFIG.whatsapp;
-  document.getElementById("ig").textContent = "Instagram: " + CONFIG.instagram;
+  const igUrl = "https://www.instagram.com/" + CONFIG.instagram + "/";
+  const igLink = document.createElement("a");
+  igLink.href = igUrl; igLink.target = "_blank"; igLink.rel = "noopener"; igLink.textContent = "@" + CONFIG.instagram;
+  document.getElementById("ig").append("Instagram: ", igLink);
+  document.getElementById("igUsuario").textContent = "@" + CONFIG.instagram;
+  document.getElementById("igBoton").href = igUrl;
   document.getElementById("ciudad").textContent = CONFIG.ciudad;
   document.getElementById("pagos").textContent = "Medios de pago: " + CONFIG.pagos;
   document.getElementById("envios").textContent = "Envíos: " + CONFIG.envios;
@@ -362,7 +399,10 @@ const CONFIG = {
   $("vaciar").onclick = () => { CARRO = []; guardar(); pintarCarro(); };
   pintarCarro();
 
-  if (CONFIG.fotoPortada) document.getElementById("heroFoto").style.backgroundImage = "url('" + foto(CONFIG.fotoPortada) + "')";
+  $("logoImg").src = foto(CONFIG.logo); $("logoImg").alt = CONFIG.marca;
+  const hero = $("heroFoto");
+  if (CONFIG.fotoPortada) hero.style.backgroundImage = "url('" + foto(CONFIG.fotoPortada) + "')";
+  else if (CONFIG.logoCompleto){ hero.classList.add("es-logo"); hero.style.backgroundImage = "url('" + foto(CONFIG.logoCompleto) + "')"; }
   grilla.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--suave)">Cargando catálogo…</p>';
   fetch(urlHoja(CONFIG.hojaGoogle) + "&t=" + Date.now())
     .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
