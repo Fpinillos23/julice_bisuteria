@@ -94,6 +94,26 @@
   .panel-pie .btn{text-align:center}
   .panel-pie .btn[aria-disabled="true"]{opacity:.4;pointer-events:none}
 
+  /* ====== INTRODUCCIÓN ====== */
+  .intro-top{display:grid;grid-template-columns:5fr 7fr;gap:64px;align-items:start}
+  .intro-top h2{margin:12px 0 0;font-size:clamp(36px,4.4vw,58px);line-height:1.05}
+  .intro-top h2 em{color:var(--acento)}
+  .intro-texto p{margin:0 0 20px;font-size:18px;line-height:1.8;font-weight:300;color:var(--texto)}
+  .intro-texto p:first-child::first-letter{font-family:'Cormorant Garamond',serif;font-size:64px;float:left;line-height:.8;padding:8px 10px 0 0;color:var(--acento)}
+  .diferencia{margin-top:88px;border-top:1px solid var(--linea);padding-top:64px}
+  .diferencia .lead{max-width:760px;margin:0 auto 48px;text-align:center;font-size:18px;line-height:1.8;font-weight:300;color:var(--texto)}
+  .diferencia .lead strong{font-weight:500;color:var(--tinta)}
+  .puntos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+  .punto{background:#fff;border:1px solid var(--linea);padding:36px 30px}
+  .punto .n{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:52px;line-height:1;color:var(--acento)}
+  .punto h3{margin:14px 0 12px;font-size:14px;letter-spacing:2px;text-transform:uppercase;font-weight:500}
+  .punto p{margin:0;font-size:15px;line-height:1.75;font-weight:300;color:var(--texto)}
+  .lema{margin-top:88px;text-align:center}
+  .lema blockquote{margin:0 auto;max-width:860px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(30px,4vw,50px);line-height:1.2;color:var(--tinta)}
+  .lema blockquote span{color:var(--acento)}
+  .lema .contacto{margin-top:28px;display:flex;flex-wrap:wrap;justify-content:center;gap:12px 32px;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;color:var(--suave)}
+  .lema .contacto a{color:var(--tinta);border-bottom:1px solid var(--acento);padding-bottom:2px}
+
   .comprar{background:var(--fondo2)}
   .pasos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px;text-align:center}
   .pasos .n{font-size:60px;font-style:italic;color:var(--acento);line-height:1}
@@ -132,6 +152,10 @@
     .card .pie{flex-direction:column;align-items:stretch;gap:10px}
     .card .quiero{text-align:center;border:1px solid var(--tinta);padding:12px 0;font-size:11px}
     .pasos,.cols{grid-template-columns:1fr;gap:36px}
+    .intro-top{grid-template-columns:1fr;gap:24px}
+    .intro-texto p,.diferencia .lead{font-size:16px}
+    .diferencia,.lema{margin-top:56px} .diferencia{padding-top:48px}
+    .puntos{grid-template-columns:1fr;gap:16px} .punto{padding:28px 22px}
   }
   @media (max-width:400px){
     .marca-top img{width:44px;height:44px} .marca-top .logo{font-size:15px;letter-spacing:1px}
@@ -150,7 +174,7 @@ const CONFIG = {
   marca: "Julice Bisutería",
   whatsapp: "573183901312",         // indicativo 57 + número, sin espacios ni +
   instagram: "juliceaccessoriestore",  // solo el usuario, sin @
-  ciudad: "[CIUDAD], Colombia",
+  ciudad: "Valledupar, Colombia",
   pagos: "[MEDIOS DE PAGO]",
   envios: "[CONDICIONES DE ENVÍO]",
   logo: "",                           // vacío = usa el logo guardado dentro de la página
@@ -195,13 +219,46 @@ const CONFIG = {
   <div class="hero-texto">
     <div class="kicker">Nueva colección</div>
     <h1 class="serif">Detalles que <em>brillan</em> contigo</h1>
-    <p>Bisutería fina diseñada para acompañar tu día a día. Aretes, collares, pulseras y anillos con acabados delicados y precios accesibles.</p>
+    <p>Joyas elaboradas a mano en alambrismo fino: piezas únicas, ligeras y pensadas para resaltar tu autenticidad.</p>
     <div class="acciones" style="display:flex;gap:14px;flex-wrap:wrap">
       <a class="btn lleno" href="#catalogo">Ver catálogo</a>
       <a class="btn" data-wa target="_blank" rel="noopener">Escríbenos</a>
     </div>
   </div>
   <div class="hero-foto" id="heroFoto"></div>
+</section>
+
+<section class="bloque" id="nosotros">
+  <div class="wrap">
+    <div class="intro-top">
+      <div>
+        <div class="kicker">Nuestra esencia</div>
+        <h2 class="serif">Piezas de arte <em>portables</em></h2>
+      </div>
+      <div class="intro-texto">
+        <p>En Julice, no solo creamos accesorios; diseñamos piezas de arte portables que capturan la esencia de la mujer contemporánea. Inspiradas en la fluidez de la naturaleza y la elegancia clásica, nuestras joyas son elaboradas meticulosamente a mano mediante la técnica del alambrismo fino.</p>
+        <p>Cada curva, cada engaste y cada detalle está pensado para resaltar tu autenticidad. Utilizamos materiales de alta calidad para garantizar que tu complemento favorito no sea solo una tendencia, sino un tesoro que te acompañe en tus momentos más especiales.</p>
+      </div>
+    </div>
+
+    <div class="diferencia">
+      <div class="titulo" style="margin-bottom:24px"><div class="kicker">La diferencia Julice</div><h2 class="serif">Ingeniería del metal, sensibilidad del diseño</h2></div>
+      <p class="lead">Aunque existen muchas marcas de bisutería, la diferencia de Julice radica en <strong>el equilibrio entre la ingeniería del metal y la sensibilidad del diseño</strong>. Mientras que la bisutería convencional suele ser producida en serie o utiliza el alambrismo de forma genérica, nosotros nos distinguimos por:</p>
+      <div class="puntos">
+        <div class="punto"><div class="n">01</div><h3>Diseño anatómico y orgánico</h3><p>A diferencia de las piezas rígidas, nuestro alambrismo está diseñado para adaptarse al movimiento y la forma del cuerpo, emulando la ligereza de un encaje.</p></div>
+        <div class="punto"><div class="n">02</div><h3>Trazado único</h3><p>Al ser piezas hechas 100% a mano sin moldes industriales, cada giro del alambre es irrepetible. No vendemos un producto, vendemos una «escultura en miniatura».</p></div>
+        <div class="punto"><div class="n">03</div><h3>Narrativa visual</h3><p>No solo unimos cuentas; creamos estructuras que protegen y realzan la piedra o el cristal, convirtiendo el metal en el protagonista de la joya y no solo en un soporte.</p></div>
+      </div>
+    </div>
+
+    <div class="lema">
+      <blockquote>“Julice: la delicadeza del metal, <span>la fuerza de tu estilo.</span>”</blockquote>
+      <div class="contacto">
+        <span>WhatsApp <a data-wa target="_blank" rel="noopener">318 390 1312</a></span>
+        <span>Instagram <a id="igIntro" target="_blank" rel="noopener"></a></span>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="bloque" id="catalogo">
@@ -238,7 +295,7 @@ const CONFIG = {
 <footer>
   <div class="wrap">
     <div class="cols">
-      <div><div class="logo serif" data-marca style="margin-bottom:14px"></div><p style="color:var(--claro3)">Bisutería fina con amor por los detalles.</p></div>
+      <div><div class="logo serif" data-marca style="margin-bottom:14px"></div><p style="color:var(--claro3)">La delicadeza del metal, la fuerza de tu estilo.</p></div>
       <div><h4>Pedidos</h4><p>WhatsApp: <a data-wa target="_blank" rel="noopener" id="waTxt"></a></p><p id="ig"></p><p id="ciudad"></p></div>
       <div><h4>Información</h4><p id="pagos"></p><p id="envios"></p><p>Cuidado: evita el agua y los perfumes.</p></div>
     </div>
@@ -266,6 +323,8 @@ const LOGOS = {
   document.getElementById("ig").append("Instagram: ", igLink);
   document.getElementById("igUsuario").textContent = "@" + CONFIG.instagram;
   document.getElementById("igBoton").href = igUrl;
+  const igIntro = document.getElementById("igIntro");
+  igIntro.href = igUrl; igIntro.textContent = "@" + CONFIG.instagram;
   document.getElementById("ciudad").textContent = CONFIG.ciudad;
   document.getElementById("pagos").textContent = "Medios de pago: " + CONFIG.pagos;
   document.getElementById("envios").textContent = "Envíos: " + CONFIG.envios;
